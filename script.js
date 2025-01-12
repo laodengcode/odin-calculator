@@ -45,16 +45,29 @@ calculator.addEventListener("click", (event) => {
     let validDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", '.'];
 
     let validOperators = ["+", "-", "x", "/", "=", "C"]
-
+    let pointButton = document.querySelector("#point");
     let inputText = event.target.textContent;
     if (validDigits.includes(inputText)) {
         if (inputArray.length === 1) {
+            if (inputArray[0].includes('.') && inputText === '.') {
+                return;
+            }
+
             let existingElement = inputArray.shift();
             existingElement === '0' ? inputArray.push(inputText) : inputArray.push(existingElement + inputText);
+            if (inputArray[0].includes('.')) {
+                pointButton.setAttribute('disabled', true);
+            }
         } else if (inputArray.length === 2) {
             inputArray.push(inputText);
         } else if (inputArray.length === 3) {
+            if (inputArray[2].includes('.') && inputText === '.') {
+                return;
+            }
             inputArray.push(inputArray.pop() + inputText);
+            if (inputArray[2].includes('.')) {
+                pointButton.setAttribute('disabled', true);
+            }
         } else {
             console.error(`invalid input ${inputText} when temp array is ${inputArray}`);
         }
@@ -80,18 +93,21 @@ calculator.addEventListener("click", (event) => {
                     inputArray = ['0'];
                 } else {
                     let result = operate(inputArray[1], parseFloat(inputArray[0]), parseFloat(inputArray[2]));
-                    inputArray = inputText === "=" ? [result] : [result, inputText];
+                    inputArray = inputText === "=" ? [result.toString()] : [result.toString(), inputText];
                 }
             } else {
                 console.error(`invalid input ${inputText} when temp array is ${inputArray}`);
             }
         }
-
     } else {
         console.log(`unsupported action ${inputText}`);
     }
 
     expression.textContent = inputArray.toString().replaceAll(',', '');
+    if (!inputArray.at(-1).includes('.')) {
+        console.log(inputArray.at(-1));
+        pointButton.removeAttribute('disabled');
+    }
 
 
 })
