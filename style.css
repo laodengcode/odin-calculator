@@ -39,6 +39,7 @@ button:hover {
     background-color: bisque;
 }
 
+
 .result {
     background-color: aquamarine;
     width: 320px;
@@ -46,7 +47,9 @@ button:hover {
     display: flex;
     justify-content: right;
     align-items: end;
-    font-size: 64px;
+    font-size: clamp(1rem, calc(0.5rem + 5vw), 3rem);
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 button.twicespace {

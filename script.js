@@ -11,7 +11,7 @@ function multiple(a, b) {
 }
 
 function divide(a, b) {
-    return a / b;
+    return Math.round(a / b * 10000) / 10000;
 }
 
 let number1 = undefined;
