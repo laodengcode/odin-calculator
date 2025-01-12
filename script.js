@@ -14,9 +14,9 @@ function divide(a, b) {
     return a / b;
 }
 
-let number1 = 0;
-let operator = '+';
-let number2 = 0;
+let number1 = undefined;
+let operator = undefined;
+let number2 = undefined;
 
 function operate(symbol, num1, num2) {
     switch (symbol) {
@@ -33,3 +33,23 @@ function operate(symbol, num1, num2) {
             return undefined;
     }
 }
+
+let calculator = document.querySelector("#calculator");
+let expression = document.querySelector(".result");
+calculator.addEventListener("click", (event) => {
+    if (event.target.className.includes("result")) {
+        return;
+    }
+
+    let validDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+    let validOperators = ["+", "-", "x", "/", "=", ".", "C"]
+
+    let inputText = event.target.textContent;
+    if (validOperators.includes(inputText) || validDigits.includes(inputText)) {
+        let userInput = document.createTextNode(inputText);
+        expression.appendChild(userInput);
+    }
+
+
+})
