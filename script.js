@@ -44,7 +44,7 @@ calculator.addEventListener("click", (event) => {
 
     let validDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", '.'];
 
-    let validOperators = ["+", "-", "x", "/", "=", "C"]
+    let validOperators = ["+", "-", "x", "/", "=", "C", "Del"]
     let pointButton = document.querySelector("#point");
     let inputText = event.target.textContent;
     if (validDigits.includes(inputText)) {
@@ -75,7 +75,16 @@ calculator.addEventListener("click", (event) => {
         if (inputText === "C") {
             inputArray = ['0'];
         } else if (inputText === "Del") {
-
+            let inputString = inputArray.toString();
+            if (inputString.length === 1) {
+                inputArray = ['0'];
+            } else {
+                inputString = inputString.substring(0, inputString.length - 1);
+                inputArray = inputString.split(',');
+                if (inputArray.at(-1) === '') {
+                    inputArray.pop();
+                }
+            }
         } else {
             if (inputArray.length === 1 && inputText !== "=") {
                 if (inputArray[0] === ".") {
@@ -105,7 +114,6 @@ calculator.addEventListener("click", (event) => {
 
     expression.textContent = inputArray.toString().replaceAll(',', '');
     if (!inputArray.at(-1).includes('.')) {
-        console.log(inputArray.at(-1));
         pointButton.removeAttribute('disabled');
     }
 
