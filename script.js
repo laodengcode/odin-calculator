@@ -1,13 +1,13 @@
 function add(a, b) {
-    return a + b;
+    return Math.round((a + b) * 10000) / 10000;
 }
 
 function subtract(a, b) {
-    return a - b;
+    return Math.round((a - b) * 10000) / 10000;
 }
 
 function multiple(a, b) {
-    return a * b;
+    return Math.round(a * b * 10000) / 10000;
 }
 
 function divide(a, b) {
@@ -17,7 +17,7 @@ function divide(a, b) {
 let number1 = undefined;
 let operator = undefined;
 let number2 = undefined;
-let inputArray = [];
+let inputArray = ['0'];
 
 function operate(symbol, num1, num2) {
     switch (symbol) {
@@ -42,44 +42,46 @@ calculator.addEventListener("click", (event) => {
         return;
     }
 
-    let validDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    let validDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", '.'];
 
     let validOperators = ["+", "-", "x", "/", "=", "C"]
 
     let inputText = event.target.textContent;
     if (validDigits.includes(inputText)) {
-        if (inputArray.length === 0) {
-            number1 = parseInt(inputText);
-            inputArray.push(number1);
-        } else if (inputArray.length === 1) {
-            number1 = parseInt(inputArray.shift() + inputText);
-            inputArray.push(number1);
+        if (inputArray.length === 1) {
+            let existingElement = inputArray.shift();
+            existingElement === '0' ? inputArray.push(inputText) : inputArray.push(existingElement + inputText);
         } else if (inputArray.length === 2) {
-            number2 = parseInt(inputText);
-            if (number2 !== 0) {
-                inputArray.push(number2);
-            } else {
-                alert(`Cannot divide by ${number2}`);
-            }
+            inputArray.push(inputText);
         } else if (inputArray.length === 3) {
-            number2 = parseInt(inputArray.pop() + inputText);
-            inputArray.push(number2);
+            inputArray.push(inputArray.pop() + inputText);
         } else {
             console.error(`invalid input ${inputText} when temp array is ${inputArray}`);
         }
     } else if (validOperators.includes(inputText)) {
         if (inputText === "C") {
-            inputArray = [0];
+            inputArray = ['0'];
+        } else if (inputText === "Del") {
+
         } else {
             if (inputArray.length === 1 && inputText !== "=") {
-                inputArray.push(inputText);
-            } else if (inputArray.length === 2) {
+                if (inputArray[0] === ".") {
+                    alert("Incomplet number.");
+                    inputArray = ['0'];
+                } else {
+                    inputArray.push(inputText);
+                }
+            } else if (inputArray.length === 2 && inputText !== "=") {
                 inputArray.pop();
                 inputArray.push(inputText);
             } else if (inputArray.length === 3) {
-
-                let result = operate(inputArray[1], inputArray[0], inputArray[2]);
-                inputArray = inputText === "=" ? [result] : [result, inputText];
+                if (inputArray[2] === "." || (parseFloat(inputArray[2]) === 0 && inputArray[1] === '/')) {
+                    alert(`Invalid operation ${inputArray.toString().replaceAll(',', '')}`);
+                    inputArray = ['0'];
+                } else {
+                    let result = operate(inputArray[1], parseFloat(inputArray[0]), parseFloat(inputArray[2]));
+                    inputArray = inputText === "=" ? [result] : [result, inputText];
+                }
             } else {
                 console.error(`invalid input ${inputText} when temp array is ${inputArray}`);
             }
