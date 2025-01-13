@@ -19,6 +19,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: white;
 }
 
 .row {
@@ -33,15 +34,18 @@ button {
     flex: 1;
     padding: 0;
     border: 0;
+    background-color: #d6d6d6;
+    color: black;
+    font-weight: bold;
 }
 
 button:hover {
-    background-color: bisque;
+    opacity: 20%;
 }
 
 
 .result {
-    background-color: aquamarine;
+    background-color: #4c4c4c;
     width: 320px;
     height: 80px;
     display: flex;
@@ -58,5 +62,6 @@ button.twicespace {
 }
 
 .operator {
-    background-color: orange;
+    background-color: #f79231;
+    color: white;
 }
