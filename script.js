@@ -14,9 +14,6 @@ function divide(a, b) {
     return Math.round(a / b * 10000) / 10000;
 }
 
-let number1 = undefined;
-let operator = undefined;
-let number2 = undefined;
 let inputArray = ['0'];
 
 function operate(symbol, num1, num2) {
@@ -37,16 +34,23 @@ function operate(symbol, num1, num2) {
 
 let calculator = document.querySelector("#calculator");
 let expression = document.querySelector(".result");
+let validDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", '.'];
+
+let validOperators = ["+", "-", "x", "/", "=", "C", "Del"];
 calculator.addEventListener("click", (event) => {
     if (event.target.className.includes("result")) {
         return;
     }
 
-    let validDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", '.'];
 
-    let validOperators = ["+", "-", "x", "/", "=", "C", "Del"]
     let pointButton = document.querySelector("#point");
     let inputText = event.target.textContent;
+
+    if (inputText === '^_^') {
+        alert('Time gives you answer ^_^');
+        return;
+    }
+
     if (validDigits.includes(inputText)) {
         if (inputArray.length === 1) {
             if (inputArray[0].includes('.') && inputText === '.') {
@@ -119,3 +123,45 @@ calculator.addEventListener("click", (event) => {
 
 
 })
+
+
+let body = document.querySelector('body');
+body.addEventListener('keydown', (event) => {
+    let keyName = event.key;
+
+
+
+    switch (keyName) {
+        case "*":
+            keyName = "x";
+            break;
+        case "Backspace":
+            keyName = "Del";
+            break;
+        case "Escape":
+            keyName = "C";
+            break;
+        case "Enter":
+            keyName = "=";
+            break;
+    }
+
+    if (!validDigits.includes(keyName) && !validOperators.includes(keyName)) {
+        console.warn(`${keyName} is not supported.`);
+        return;
+    }
+
+    const buttons = calculator.querySelectorAll('button');
+    const targetButton = Array.from(buttons).find(button => button.textContent === keyName);
+
+    if (targetButton === undefined) {
+        console.error(`No button with key ${keyName}`);
+        return;
+    }
+
+    targetButton.click();
+
+
+})
+
+
